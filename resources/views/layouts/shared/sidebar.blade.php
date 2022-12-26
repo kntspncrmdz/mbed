@@ -14,14 +14,12 @@
           </span>
           <h4 class="text-section">Playlists</h4>
         </li>
-        @foreach($playlists as $playlist)
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a href="">
             <i class="fas fa-layer-group"></i>
-            <p>{{ $playlist->title }}</p>
+            <p></p>
           </a>
-        </li>
-        @endforeach
+        </li> -->
       </ul>
     </div>
   </div>

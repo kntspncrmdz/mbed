@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Item;
 use App\Models\Playlist;
 use Illuminate\Http\Request;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class PlaylistController extends Controller
 {
@@ -56,7 +57,9 @@ class PlaylistController extends Controller
    */
   public function show(Playlist $playlist)
   {
-    
+    $items = $playlist->items()->get();
+
+    return view('layouts.items.index')->with('playlist', $playlist)->with('items', $items);
   }
 
   /**
@@ -67,10 +70,7 @@ class PlaylistController extends Controller
    */
   public function edit(Playlist $playlist)
   {
-    $items = Item::all();
-    // dd($playlist);
-
-    return view('layouts.items.index')->with('playlist', $playlist)->with('items', $items);
+    //
   }
 
   /**
@@ -82,7 +82,13 @@ class PlaylistController extends Controller
    */
   public function update(Request $request, Playlist $playlist)
   {
-    //
+    $request->validate([
+      'title' => 'required'
+    ]);
+
+    $playlist->update($request->all());
+
+    return redirect()->back();
   }
 
   /**
@@ -94,6 +100,35 @@ class PlaylistController extends Controller
   public function destroy(Playlist $playlist)
   {
     $playlist->delete();
+
+    return redirect()->route('playlists.index');
+  }
+
+  public function storeItem(Request $request)
+  {
+    $request->validate([
+      'item' => 'required'
+    ]);
+
+    Item::create($request->all());
+
+    return redirect()->back();
+  }
+
+  public function destroyItem(Item $item)
+  {
+    $item->delete();
+
+    return redirect()->back();
+  }
+
+  public function updateItem(Request $request, Item $item)
+  {
+    $request->validate([
+      'item' => 'required'
+    ]);
+
+    $item->update($request->all());
 
     return redirect()->back();
   }

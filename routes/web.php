@@ -32,4 +32,8 @@ Route::middleware('auth')->group(function () {
 
 Route::resource('playlists', PlaylistController::class);
 
+Route::post('/playlist/items', [PlaylistController::class, 'storeItem'])->name('items.store');
+Route::delete('playlist/items/{item}', [PlaylistController::class, 'destroyItem'])->name('items.destroy');
+Route::put('playlist/items/{item}', [PlaylistController::class, 'updateItem'])->name('items.update');
+
 require __DIR__.'/auth.php';
